@@ -1,17 +1,26 @@
-const CACHE_NAME="premium-pass-cache";
+const CACHE_NAME = "fakeinfo-v1";
 
-self.addEventListener("install",e=>{
-  e.waitUntil(
-    caches.open(CACHE_NAME).then(cache=>{
-      return cache.addAll(["./"]);
+self.addEventListener("install", event => {
+  self.skipWaiting();
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(cache => {
+      return cache.addAll([
+        "/",
+        "/index.html",
+        "/manifest.json"
+      ]);
     })
   );
 });
 
-self.addEventListener("fetch",e=>{
-  e.respondWith(
-    caches.match(e.request).then(response=>{
-      return response||fetch(e.request);
+self.addEventListener("activate", event => {
+  event.waitUntil(self.clients.claim());
+});
+
+self.addEventListener("fetch", event => {
+  event.respondWith(
+    caches.match(event.request).then(response => {
+      return response || fetch(event.request);
     })
   );
 });
