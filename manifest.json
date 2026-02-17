@@ -1,10 +1,10 @@
 {
-  "name": "Premium Password Tool",
-  "short_name": "PassTool",
-  "start_url": "index.html",
+  "name": "Fake Info Generator",
+  "short_name": "FakeInfo",
+  "start_url": "/",
   "display": "standalone",
-  "background_color": "#020617",
-  "theme_color": "#0f172a",
+  "background_color": "#141e30",
+  "theme_color": "#141e30",
   "icons": [
     {
       "src": "icon-192.png",
