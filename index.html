@@ -3,118 +3,82 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Premium Pass Tool</title>
+<title>Fake Info Generator</title>
 
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0f172a">
+<meta name="theme-color" content="#141e30">
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Segoe UI',sans-serif;
-}
-
 body{
-  background:linear-gradient(135deg,#0f172a,#020617);
-  min-height:100vh;
+  margin:0;
+  font-family:Arial;
+  background:linear-gradient(135deg,#141e30,#243b55);
+  color:#fff;
+}
+.container{
+  width:92%;
+  max-width:420px;
+  margin:auto;
+  padding:20px 0;
+}
+h1{text-align:center;margin-bottom:10px;}
+
+.topButtons{
   display:flex;
-  align-items:center;
-  justify-content:center;
+  gap:10px;
+  margin-bottom:15px;
+}
+.topButtons button{
+  flex:1;
+  padding:10px;
+  border:none;
+  border-radius:8px;
+  background:#1f2937;
   color:#fff;
 }
 
-.container{
+select,input{
   width:100%;
-  max-width:420px;
-  padding:20px;
+  padding:12px;
+  border-radius:8px;
+  border:none;
+  margin-bottom:10px;
 }
 
 .card{
-  backdrop-filter:blur(20px);
   background:rgba(255,255,255,0.05);
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:22px;
-  padding:20px;
-  box-shadow:0 15px 50px rgba(0,0,0,0.5);
-  margin-bottom:20px;
-}
-
-h2{
-  text-align:center;
-  margin-bottom:15px;
-  font-size:20px;
-}
-
-button{
-  width:100%;
-  padding:12px;
-  border:none;
-  border-radius:14px;
-  font-size:15px;
-  font-weight:600;
-  cursor:pointer;
-  background:linear-gradient(135deg,#22c55e,#16a34a);
-  color:#fff;
-  transition:0.2s ease;
-}
-
-button:active{
-  transform:scale(0.96);
-}
-
-.output{
-  margin-top:15px;
   padding:15px;
-  border-radius:14px;
-  background:#0f172a;
-  border:1px solid #1e293b;
-  text-align:center;
-  font-size:18px;
-  letter-spacing:1px;
-  word-break:break-all;
+  border-radius:12px;
+  margin-bottom:10px;
   position:relative;
-  cursor:pointer;
-  transition:0.2s;
 }
-
-.output:active{
-  transform:scale(0.98);
-}
-
-.overlay{
+.label{font-size:13px;opacity:0.7;}
+.value{font-size:16px;margin-top:5px;}
+.copyBtn{
   position:absolute;
-  inset:0;
-  background:rgba(120,120,120,0.6);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:bold;
-  font-size:16px;
-  border-radius:14px;
-  opacity:0;
-  transition:0.2s;
+  right:10px;
+  top:12px;
+  background:#475569;
+  padding:5px 10px;
+  border-radius:6px;
+  cursor:pointer;
 }
 
-.overlay.show{
-  opacity:1;
+button.generate{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(135deg,#6a11cb,#2575fc);
+  color:#fff;
+  margin-top:10px;
 }
 
-.flex{
-  display:flex;
-  gap:10px;
-  margin-top:15px;
-}
-
-.half{
-  flex:1;
-}
-
-@media(max-width:480px){
-  .flex{
-    flex-direction:column;
-  }
+.footer{
+  text-align:center;
+  margin-top:20px;
+  font-size:12px;
+  opacity:0.7;
 }
 </style>
 </head>
@@ -122,114 +86,136 @@ button:active{
 
 <div class="container">
 
-<!-- PASSWORD -->
-<div class="card">
-  <h2>🔐 16 Character Password</h2>
-  <button onclick="generatePassword()">Generate Password</button>
-  <div class="output" id="password" onclick="copyBox('password')">
-    Tap To Copy
-    <div class="overlay" id="passwordOverlay">Copied</div>
-  </div>
+<h1>Fake Info Generator</h1>
+
+<div class="topButtons">
+  <button onclick="window.location.href='https://t.me/JackBhai_X'">Developer</button>
+  <button onclick="window.location.href='https://t.me/Axr_earning'">Telegram Channel</button>
 </div>
 
-<!-- NAME -->
+<select id="country">
+  <option value="bd">Bangladesh 🇧🇩</option>
+  <option value="us">USA 🇺🇸</option>
+</select>
+
+<input type="number" id="passLength" placeholder="Password length (min 4)">
+<input type="number" id="dateValue" placeholder="Add DATE at end (e.g. 16)">
+
 <div class="card">
-  <h2>👩 USA Female Name</h2>
-  <button onclick="generateName()">Generate Name</button>
+  <div class="label">First Name</div>
+  <div class="value" id="firstName">---</div>
+  <div class="copyBtn" onclick="copyText('firstName',this)">Copy</div>
+</div>
 
-  <div class="flex">
-    <div class="half">
-      <div class="output" id="firstName" onclick="copyBox('firstName')">
-        First Name
-        <div class="overlay" id="firstNameOverlay">Copied</div>
-      </div>
-    </div>
+<div class="card">
+  <div class="label">Last Name</div>
+  <div class="value" id="lastName">---</div>
+  <div class="copyBtn" onclick="copyText('lastName',this)">Copy</div>
+</div>
 
-    <div class="half">
-      <div class="output" id="lastName" onclick="copyBox('lastName')">
-        Last Name
-        <div class="overlay" id="lastNameOverlay">Copied</div>
-      </div>
-    </div>
-  </div>
+<div class="card">
+  <div class="label">Password</div>
+  <div class="value" id="password">---</div>
+  <div class="copyBtn" onclick="copyText('password',this)">Copy</div>
+</div>
+
+<button class="generate" onclick="generate()">Generate Info</button>
+
+<div class="footer">
+© 2026 JACK BHAI ALL RIGHTS RESERVED
 </div>
 
 </div>
 
 <script>
 
-// -------- CRYPTO SECURE PASSWORD --------
-function generatePassword(){
-  const chars="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789";
-  let array=new Uint32Array(16);
-  window.crypto.getRandomValues(array);
+// ===== FULL 100 BANGLADESH NAMES =====
+const bdNames = [
+"Arafat Hossain","Nusrat Jahan","Tanvir Ahmed","Sadia Islam","Mahmudul Hasan",
+"Farzana Akter","Rakibul Karim","Jannatul Ferdous","Mehedi Hasan","Sharmin Sultana",
+"Shakib Al Hasan","Tanjina Rahman","Imran Hossain","Roksana Begum","Saiful Islam",
+"Tamanna Chowdhury","Ariful Haque","Sumaiya Akhter","Nazmul Hasan","Mitu Das",
+"Sabbir Rahman","Nabila Noor","Faisal Ahmed","Ishrat Jahan","Rezaul Karim",
+"Lamiya Rahman","Zubair Hossain","Priyanka Saha","Ashraful Islam","Mim Akter",
+"Rifat Mahmud","Tahmina Sultana","Omar Faruk","Farhana Yasmin","Sohanur Rahman",
+"Anika Tabassum","Khaled Hasan","Rumana Ahmed","Morshed Alam","Tania Sultana",
+"Hasan Mahmud","Sharifa Khatun","Emon Chowdhury","Afroza Parvin","Jubaer Ahmed",
+"Sanzida Islam","Kamrul Hasan","Dilruba Akter","Liton Das","Bristy Rahman",
+"Rashedul Islam","Nusrat Tabassum","Tanmoy Sarker","Faria Sultana","Shahriar Kabir",
+"Shaila Parveen","Raihan Uddin","Maria Akhter","Minhaz Uddin","Oishee Rahman",
+"Arman Hossain","Sadman Sakib","Suborna Akter","Fahim Ahmed","Lubaba Chowdhury",
+"Naimul Hasan","Tasnim Jahan","Bappy Khan","Urmi Akter","Mahfuz Rahman",
+"Israt Jahan","Rakib Hasan","Samia Afrin","Touhidul Islam","Mahiya Mahi",
+"Nadim Hossain","Kazi Sharmin","Pias Ahmed","Nusaira Islam","Shuvo Roy",
+"Tamanna Islam","Jisan Ahmed","Rukaiya Sultana","Saad Hossain","Anjum Nahar",
+"Shadman Rahman","Habiba Noor","Ayaan Karim","Farin Ahmed","Ridwan Kabir",
+"Lamisa Haque","Tahsin Ahmed","Maimuna Akter","Adnan Faruk","Sadiya Parvin",
+"Yasin Arafat","Elma Islam","Samiul Hasan","Aditi Das","Zayan Chowdhury"
+];
 
-  let password="";
-  for(let i=0;i<16;i++){
-    password+=chars[array[i]%chars.length];
+// ===== FULL 100 USA NAMES =====
+const usNames = [
+"Olivia Johnson","Emma Williams","Ava Brown","Sophia Jones","Isabella Garcia",
+"Mia Martinez","Charlotte Rodriguez","Amelia Hernandez","Harper Lopez","Evelyn Gonzalez",
+"Abigail Wilson","Emily Anderson","Elizabeth Thomas","Sofia Taylor","Avery Moore",
+"Ella Jackson","Scarlett Martin","Grace Lee","Chloe Perez","Victoria Thompson",
+"Riley White","Aria Harris","Lily Sanchez","Aubrey Clark","Zoey Ramirez",
+"Penelope Lewis","Layla Robinson","Lillian Walker","Nora Young","Hannah Allen",
+"Addison King","Brooklyn Wright","Ellie Scott","Stella Torres","Natalie Nguyen",
+"Zoe Hill","Leah Flores","Hazel Green","Violet Adams","Aurora Nelson",
+"Savannah Baker","Audrey Hall","Bella Rivera","Claire Campbell","Skylar Mitchell",
+"Lucy Carter","Paisley Roberts","Everly Gomez","Anna Phillips","Caroline Evans",
+"Nova Turner","Genesis Diaz","Emilia Parker","Kennedy Cruz","Samantha Edwards",
+"Maya Collins","Willow Stewart","Kinsley Morris","Naomi Rogers","Aaliyah Reed",
+"Elena Cook","Sarah Morgan","Ariana Bell","Allison Murphy","Gabriella Bailey",
+"Alice Rivera","Madelyn Cooper","Cora Richardson","Ruby Cox","Eva Howard",
+"Serenity Ward","Autumn Peterson","Adeline Gray","Hailey Ramirez","Gianna James",
+"Valentina Watson","Isla Brooks","Eliana Kelly","Quinn Sanders","Nevaeh Price",
+"Ivy Bennett","Sadie Wood","Piper Barnes","Lydia Ross","Josephine Henderson",
+"Emery Coleman","Julia Jenkins","Delilah Perry","Arianna Powell","Vivian Long",
+"Kaylee Patterson","Sophie Hughes","Brielle Flores","Madeline Washington","Peyton Butler",
+"Rylee Simmons","Clara Foster","Melanie Gonzales","Melody Bryant","Reagan Alexander",
+"Athena Russell","Jade Griffin","Maria Hayes","Taylor Myers","Faith Ford"
+];
+
+function generate(){
+  let country=document.getElementById("country").value;
+  let list=country==="bd"?bdNames:usNames;
+
+  let random=list[Math.floor(Math.random()*list.length)];
+  let parts=random.split(" ");
+
+  document.getElementById("firstName").innerText=parts[0];
+  document.getElementById("lastName").innerText=parts.slice(1).join(" ");
+
+  let length=parseInt(document.getElementById("passLength").value);
+  if(!length||length<4) length=8;
+
+  const chars="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  let pass="";
+  for(let i=0;i<length;i++){
+    pass+=chars[Math.floor(Math.random()*chars.length)];
   }
 
-  document.getElementById("password").childNodes[0].nodeValue=password;
+  let date=document.getElementById("dateValue").value;
+  if(date){ pass+=date; }
+
+  document.getElementById("password").innerText=pass;
 }
 
-// -------- COPY FUNCTION --------
-function copyBox(id){
-  const el=document.getElementById(id);
-  const text=el.childNodes[0].nodeValue.trim();
-  if(text==="Tap To Copy"||text==="First Name"||text==="Last Name") return;
-
+function copyText(id,btn){
+  let text=document.getElementById(id).innerText;
+  if(text==="---") return;
   navigator.clipboard.writeText(text);
-
-  const overlay=document.getElementById(id+"Overlay");
-  overlay.classList.add("show");
-
-  setTimeout(()=>{
-    overlay.classList.remove("show");
-  },800);
+  btn.innerText="Copied";
+  setTimeout(()=>btn.innerText="Copy",1000);
 }
 
-// -------- NAME LIST --------
-const names=[ "Olivia Johnson","Emma Williams","Ava Brown","Sophia Jones","Isabella Garcia",
-"Mia Martinez","Charlotte Rodriguez","Amelia Hernandez","Harper Lopez",
-"Evelyn Gonzalez","Abigail Wilson","Emily Anderson","Elizabeth Thomas",
-"Sofia Taylor","Avery Moore","Ella Jackson","Scarlett Martin","Grace Lee",
-"Chloe Perez","Victoria Thompson","Riley White","Aria Harris","Lily Sanchez",
-"Aubrey Clark","Zoey Ramirez","Penelope Lewis","Layla Robinson",
-"Lillian Walker","Nora Young","Hannah Allen","Addison King","Brooklyn Wright",
-"Ellie Scott","Stella Torres","Natalie Nguyen","Zoe Hill","Leah Flores",
-"Hazel Green","Violet Adams","Aurora Nelson","Savannah Baker","Audrey Hall",
-"Bella Rivera","Claire Campbell","Skylar Mitchell","Lucy Carter",
-"Paisley Roberts","Everly Gomez","Anna Phillips","Caroline Evans",
-"Nova Turner","Genesis Diaz","Emilia Parker","Kennedy Cruz",
-"Samantha Edwards","Maya Collins","Willow Stewart","Kinsley Morris",
-"Naomi Rogers","Aaliyah Reed","Elena Cook","Sarah Morgan","Ariana Bell",
-"Allison Murphy","Gabriella Bailey","Alice Rivera","Madelyn Cooper",
-"Cora Richardson","Ruby Cox","Eva Howard","Serenity Ward","Autumn Peterson",
-"Adeline Gray","Hailey Ramirez","Gianna James","Valentina Watson",
-"Isla Brooks","Eliana Kelly","Quinn Sanders","Nevaeh Price","Ivy Bennett",
-"Sadie Wood","Piper Barnes","Lydia Ross","Josephine Henderson",
-"Emery Coleman","Julia Jenkins","Delilah Perry","Arianna Powell",
-"Vivian Long","Kaylee Patterson","Sophie Hughes","Brielle Flores",
-"Madeline Washington","Peyton Butler","Rylee Simmons","Clara Foster",
-"Melanie Gonzales","Melody Bryant","Reagan Alexander","Athena Russell",
-"Jade Griffin","Maria Hayes","Taylor Myers","Faith Ford","Rose Hamilton",
-"Kylie Graham","Alexis Sullivan","Mary Wallace","Margaret West",
-"Ashley Jordan","Brianna Owens","Katherine Reynolds","Lauren Fisher",
-"Danielle Ellis","Jessica Harrison","Nicole Gibson","Rebecca McDonald",
-"Amanda Marshall","Stephanie Ortiz","Heather Johnston","Rachel Schneider"];
-
-function generateName(){
-  const random=names[Math.floor(Math.random()*names.length)];
-  const split=random.split(" ");
-  document.getElementById("firstName").childNodes[0].nodeValue=split[0];
-  document.getElementById("lastName").childNodes[0].nodeValue=split[1];
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js');
+  });
 }
-
-// -------- SERVICE WORKER --------
-if("serviceWorker" in navigator){
-  navigator.serviceWorker.register("sw.js");
-}
-
 </script>
 
 </body>
