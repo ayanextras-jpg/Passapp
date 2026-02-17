@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Premium Pass Tool</title>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f172a">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Segoe UI',sans-serif;
+}
+
+body{
+  background:linear-gradient(135deg,#0f172a,#020617);
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+}
+
+.container{
+  width:100%;
+  max-width:420px;
+  padding:20px;
+}
+
+.card{
+  backdrop-filter:blur(20px);
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:22px;
+  padding:20px;
+  box-shadow:0 15px 50px rgba(0,0,0,0.5);
+  margin-bottom:20px;
+}
+
+h2{
+  text-align:center;
+  margin-bottom:15px;
+  font-size:20px;
+}
+
+button{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:14px;
+  font-size:15px;
+  font-weight:600;
+  cursor:pointer;
+  background:linear-gradient(135deg,#22c55e,#16a34a);
+  color:#fff;
+  transition:0.2s ease;
+}
+
+button:active{
+  transform:scale(0.96);
+}
+
+.output{
+  margin-top:15px;
+  padding:15px;
+  border-radius:14px;
+  background:#0f172a;
+  border:1px solid #1e293b;
+  text-align:center;
+  font-size:18px;
+  letter-spacing:1px;
+  word-break:break-all;
+  position:relative;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.output:active{
+  transform:scale(0.98);
+}
+
+.overlay{
+  position:absolute;
+  inset:0;
+  background:rgba(120,120,120,0.6);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  font-size:16px;
+  border-radius:14px;
+  opacity:0;
+  transition:0.2s;
+}
+
+.overlay.show{
+  opacity:1;
+}
+
+.flex{
+  display:flex;
+  gap:10px;
+  margin-top:15px;
+}
+
+.half{
+  flex:1;
+}
+
+@media(max-width:480px){
+  .flex{
+    flex-direction:column;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<!-- PASSWORD -->
+<div class="card">
+  <h2>🔐 16 Character Password</h2>
+  <button onclick="generatePassword()">Generate Password</button>
+  <div class="output" id="password" onclick="copyBox('password')">
+    Tap To Copy
+    <div class="overlay" id="passwordOverlay">Copied</div>
+  </div>
+</div>
+
+<!-- NAME -->
+<div class="card">
+  <h2>👩 USA Female Name</h2>
+  <button onclick="generateName()">Generate Name</button>
+
+  <div class="flex">
+    <div class="half">
+      <div class="output" id="firstName" onclick="copyBox('firstName')">
+        First Name
+        <div class="overlay" id="firstNameOverlay">Copied</div>
+      </div>
+    </div>
+
+    <div class="half">
+      <div class="output" id="lastName" onclick="copyBox('lastName')">
+        Last Name
+        <div class="overlay" id="lastNameOverlay">Copied</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+
+// -------- CRYPTO SECURE PASSWORD --------
+function generatePassword(){
+  const chars="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789";
+  let array=new Uint32Array(16);
+  window.crypto.getRandomValues(array);
+
+  let password="";
+  for(let i=0;i<16;i++){
+    password+=chars[array[i]%chars.length];
+  }
+
+  document.getElementById("password").childNodes[0].nodeValue=password;
+}
+
+// -------- COPY FUNCTION --------
+function copyBox(id){
+  const el=document.getElementById(id);
+  const text=el.childNodes[0].nodeValue.trim();
+  if(text==="Tap To Copy"||text==="First Name"||text==="Last Name") return;
+
+  navigator.clipboard.writeText(text);
+
+  const overlay=document.getElementById(id+"Overlay");
+  overlay.classList.add("show");
+
+  setTimeout(()=>{
+    overlay.classList.remove("show");
+  },800);
+}
+
+// -------- NAME LIST --------
+const names=[ "Olivia Johnson","Emma Williams","Ava Brown","Sophia Jones","Isabella Garcia",
+"Mia Martinez","Charlotte Rodriguez","Amelia Hernandez","Harper Lopez",
+"Evelyn Gonzalez","Abigail Wilson","Emily Anderson","Elizabeth Thomas",
+"Sofia Taylor","Avery Moore","Ella Jackson","Scarlett Martin","Grace Lee",
+"Chloe Perez","Victoria Thompson","Riley White","Aria Harris","Lily Sanchez",
+"Aubrey Clark","Zoey Ramirez","Penelope Lewis","Layla Robinson",
+"Lillian Walker","Nora Young","Hannah Allen","Addison King","Brooklyn Wright",
+"Ellie Scott","Stella Torres","Natalie Nguyen","Zoe Hill","Leah Flores",
+"Hazel Green","Violet Adams","Aurora Nelson","Savannah Baker","Audrey Hall",
+"Bella Rivera","Claire Campbell","Skylar Mitchell","Lucy Carter",
+"Paisley Roberts","Everly Gomez","Anna Phillips","Caroline Evans",
+"Nova Turner","Genesis Diaz","Emilia Parker","Kennedy Cruz",
+"Samantha Edwards","Maya Collins","Willow Stewart","Kinsley Morris",
+"Naomi Rogers","Aaliyah Reed","Elena Cook","Sarah Morgan","Ariana Bell",
+"Allison Murphy","Gabriella Bailey","Alice Rivera","Madelyn Cooper",
+"Cora Richardson","Ruby Cox","Eva Howard","Serenity Ward","Autumn Peterson",
+"Adeline Gray","Hailey Ramirez","Gianna James","Valentina Watson",
+"Isla Brooks","Eliana Kelly","Quinn Sanders","Nevaeh Price","Ivy Bennett",
+"Sadie Wood","Piper Barnes","Lydia Ross","Josephine Henderson",
+"Emery Coleman","Julia Jenkins","Delilah Perry","Arianna Powell",
+"Vivian Long","Kaylee Patterson","Sophie Hughes","Brielle Flores",
+"Madeline Washington","Peyton Butler","Rylee Simmons","Clara Foster",
+"Melanie Gonzales","Melody Bryant","Reagan Alexander","Athena Russell",
+"Jade Griffin","Maria Hayes","Taylor Myers","Faith Ford","Rose Hamilton",
+"Kylie Graham","Alexis Sullivan","Mary Wallace","Margaret West",
+"Ashley Jordan","Brianna Owens","Katherine Reynolds","Lauren Fisher",
+"Danielle Ellis","Jessica Harrison","Nicole Gibson","Rebecca McDonald",
+"Amanda Marshall","Stephanie Ortiz","Heather Johnston","Rachel Schneider"];
+
+function generateName(){
+  const random=names[Math.floor(Math.random()*names.length)];
+  const split=random.split(" ");
+  document.getElementById("firstName").childNodes[0].nodeValue=split[0];
+  document.getElementById("lastName").childNodes[0].nodeValue=split[1];
+}
+
+// -------- SERVICE WORKER --------
+if("serviceWorker" in navigator){
+  navigator.serviceWorker.register("sw.js");
+}
+
+</script>
+
+</body>
+</html>
